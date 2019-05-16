@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>dottie-switch</title>
+    <style>
+        body {
+            background-color: #e8e8e8;
+            overflow: hidden;
+        }
+
+        .window {
+            background: #e8e6e8;
+        }
+
+        .toolbar-header {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 16px;
+            font-weight: bold;
+            border-bottom: 1px solid darkgray;
+        }
+
+        .toolbar-header .title {
+            font-size: 20px;
+            color: #128bd6;
+        }
+        .toolbar-footer {
+            width: 100%;
+            height: 40px;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: snow;
+            line-height: 40px;
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 15px;
+            box-sizing: border-box;
+        }
+
+        .footer-btn {
+            width: 30px;
+            height: 30px;
+            background-size: 100% 100%;
+            background-repeat:no-repeat;
+        }
+
+        .footer-btn:hover {
+            cursor: pointer;
+            opacity: 0.8;
+        }
+
+        #exit {
+            background-image: url(./assets/exit.png);
+        }
+
+        #reboot {
+            background-image: url(./assets/relaunch.png);
+        }
+
+        .content-item {
+            display: flex;
+            justify-content: space-between;
+            border: 3px solid snow;
+            border-radius: 10px;
+            height: 35px;
+            line-height: 35px;
+            letter-spacing: 2px;
+            padding: 5px 5px;
+            margin-top: 5px;
+            transition: all .3s ease-in-out;
+        }
+
+        .content-item:hover {
+            background: snow;
+            border-color: #128bd6;
+            cursor: pointer;
+            color: #128bd6;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="window">
+        <header class="toolbar-header">
+            <div class="title">Dottie-Switch</div>
+        </header>
+
+        <div class="window-content">
+            <div class="content-item" id="desktop">
+                <div class="item-title">隐藏桌面</div>
+                <div class="item-value" id="desktop-switch">开关</div>
+            </div>
+            <div class="content-item" id="file">
+                    <div class="item-title">隐藏文件</div>
+                    <div class="item-value" id="file-switch">开关</div>
+                </div>
+        </div>
+
+        <footer class="toolbar-footer">
+            <span id="exit" class="footer-btn" title="退出"></span>
+            <span id="reboot" class="footer-btn" title="重启"></span>
+        </footer>
+    </div>
+</body>
+<script>
+    document.addEventListener('click', (event) => {
+        if (event.target.href) {
+            require('electron').shell.openExternal(event.target.href);
+            event.preventDefault();
+            return;
+        }
+    });
+
+    document.getElementById('exit').addEventListener('click', () => {
+        require('electron').remote.app.exit(0);
+        return;
+    });
+
+    document.getElementById('reboot').addEventListener('click', () => {
+        require('electron').remote.app.relaunch();
+        require('electron').remote.app.exit(0);
+        return;
+    });
+
+    document.getElementById('desktop').addEventListener('click', () => {
+        require('electron').ipcRenderer.send("desktop", "desktop")
+    });
+
+    require('electron').ipcRenderer.on('desktop', (event, isShow) => {
+        if (isShow === 1) {
+            document.getElementById('desktop-switch').innerText = '隐藏';
+        } else {
+            document.getElementById('desktop-switch').innerText = '显示';
+        }
+    });
+
+    document.getElementById('file').addEventListener('click', () => {
+        require('electron').ipcRenderer.send("file", "file")
+    });
+
+    require('electron').ipcRenderer.on('file', (event, isShow) => {
+        if (isShow === 1) {
+            document.getElementById('file-switch').innerText = '隐藏';
+        } else {
+            document.getElementById('file-switch').innerText = '显示';
+        }
+    });
+</script>
+
+</html>

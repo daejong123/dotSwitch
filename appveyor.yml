@@ -1,0 +1,21 @@
+version: 1.0.{build}
+branches:
+  only:
+  - master
+image: Visual Studio 2017
+platform: x64
+environment:
+  appveyor-dotSwitch: 57ed66a4e21d5174a919b06e5e4799493ba2d88c
+install:
+- ps: >-
+    Install-Product node 8 x64
+
+    node -v
+
+    npm
+build_script:
+  - npm run makeMac
+deploy:
+- provider: GitHub
+  auth_token:
+    secure: WsrTMYZWmU7hFSotc+hYph48lvjM0Z71tvrR+zl0QtqYX74LYpSuK0afGFpZvC4a

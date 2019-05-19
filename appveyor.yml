@@ -12,7 +12,7 @@ install:
 
     node -v
 
-    npm
+    npm install
 build_script:
   - npm run makeMac
 deploy:

@@ -85,7 +85,6 @@ if (process.platform === 'darwin') {
                 const isShow = execSync('defaults read com.apple.finder CreateDesktop', {}).toString("utf-8")
                 window && window.webContents.send('desktop', parseInt(isShow));
 
-
                 const isShowFile = execSync('defaults read com.apple.finder AppleShowAllFiles').toString("utf-8")
                 window && window.webContents.send('file', parseInt(isShowFile));
             } catch (e) {

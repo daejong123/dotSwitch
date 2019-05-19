@@ -7,7 +7,7 @@
   "author": "dottie",
   "scripts": {
     "start": "electron .",
-    "install": "electron-rebuild",
+    "rebuild": "electron-rebuild",
     "package": "electron-packager ./ --asar --platform=darwin --arch=x64 --icon=./icon.icns --ignore=node_modules/electron-* --ignore=./out --out=./out --overwrite",
     "installer": "node makeInstaller.js",
     "makeMac": "run-s package installer"
